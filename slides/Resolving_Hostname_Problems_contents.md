@@ -1,0 +1,261 @@
+## Introducción
+
+* El nombre de un servidor se puede configurar
+ * [**Localmente**](#/3/2): afecta únicamente al host local, se suele mostrar en el prompt del sistema
+ * [**Mediante un servidor DNS**](#/3/3): afecta a todos los ordenadores del sistema
+* Si ambos nombres no coinciden tendremos problemas de resolución de nombres.
+* Las utilidades [`host`](#/3/4) y [`dig`](#/3/6) me pueden ser de utilidad para detectar estos problemas.
+
+<aside class="notes">
+* Hostname problems can take several forms, which in turn have several possible solutions.
+* Recall that hostnames must be set both on:
+ * the local computer:  affects the hostname that the computer uses for itself, such as in bash prompts or embedded in network packets the computer sends to other computers.
+ * and on a DNS server: affects how other computers contact your system.
+ * or other means of hostname resolution.
+* If these two hostnames don’t match, problems can result.
+</aside>
+
+
+
+## Comprobar configuración local
+
+* El nombre asignado localmente lo comprobamos usando  [`hostname`](http://linux.die.net/man/1/hostname):
+```bash
+ijfviana-dev@vagalume-dev:~$ hostname
+vagalume
+```
+* Las opciones `-f`, `--fqdn`, o `--long` además devuelven el nombre del dominio
+```bash
+ijfviana-dev@vagalume-dev:~$ hostname -f
+vagalume.dti.uhu.es
+```
+
+<aside class="notes">
+* You can learn your own computer’s hostname, as known locally, by typing [`hostname`](http://linux.die.net/man/1/hostname).
+* This call returns the hostname portion only;
+* If you want to know the FQDN, use the -f, --fqdn, or --long option, as in hostname --fqdn.
+</aside>
+
+
+
+## Comprobar DNS
+
+* Para comprobar si el DNS devuelve adecuadamente el nombre del ordenador se usa el comando [`host`](http://linux.die.net/man/1/host)
+```bash
+ijfviana-dev@vagalume-dev:~$ host vagalume.dti.uhu.es
+vagalume.dti.uhu.es has address 192.168.1.2
+```
+* La dirección que devuelve debe conincidir con la obtenida mediante el comando [`ifconfig`](http://linux.die.net/man/8/ifconfig).
+* Excepciones:
+ * Sistemas con múltiples interfaces
+ * Sistemas que usen sistemas de balanceo
+ * Sistemas que hagan uso de NAT (direciones internas/externas)
+
+<aside class="notes">
+* You can verify that this name resolves to your machine by using the host command, which performs DNS lookups:
+```bash
+ijfviana-dev@vagalume-dev:~$ host vagalume.dti.uhu.es
+vagalume.dti.uhu.es has address 192.168.1.2
+```
+* If ifconfig shows that you have the IP address returned by host, your configuration is consistent.
+* There are, however, some situations in which an inconsistency is normal:
+ * systems with multiple network interfaces,
+ * server farms that employ load balancing (directing traffic for one hostname to multiple servers),
+ * different internal and external IP addresses or hostnames when a network uses NAT.
+</aside>
+
+
+
+## Utilidad Host
+
+* Si queremos comprobar que nuestro servidor es conocido por Internet, usamos un  [DNS raiz](http://es.wikipedia.org/wiki/Servidor_Ra%C3%ADz):
+```bash
+$ host nessus.example.com 10.20.102.7
+```
+* El valor devuelto por el DNS raíz puede ser distinto al del DNS local. ¿Soluciones?
+
+<div class="row">
+  <div class="col-md-6">
+        <a class="fancybox" href="img/DNS_Tree.svg" data-fancybox-group="gallery" title="Volumenes físicos">
+      <img height="350px" src="img/DNS_Tree.svg" alt="Volumenes físicos">
+      </a>
+  </div>
+  <div class="col-md-6">
+    <a class="fancybox" href="img/Root-current.svg" data-fancybox-group="gallery" title="Volumenes físicos">
+    <img height="350px" src="img/Root-current.svg" alt="Volumenes físicos">
+  </a>
+  </div>
+</div>
+
+<aside class="notes">
+* If your local DNS server handles lookups for a small private domain, you may want to verify that the global DNS network can find your hostname.
+* To do this, pass the IP address of a remote DNS server after the hostname you want to look up with host:
+```bash
+$ host nessus.example.com 10.20.102.7
+```
+* This example uses the DNS server at 10.20.102.7 to perform the name resolution,
+* If your locally defined and DNS hostnames don’t match, you have several possible recourses:
+</aside>
+
+
+
+## Soluciones
+
+* Ajustar adecuadamente el DNS local (si es que tenemos acceso)
+* Editar el contenido de `/etc/hosts` si la red es pequeña
+* Cambiar el nombre local del ordenador usando `hostname` o modificando los ficheros `/etc/hostname` o `/etc/HOSTNAME`
+
+<aside class="notes">
+* Adjust DNS or Other Network Name Resolution Systems If you believe your DNS entries are wrong, you can try
+to adjust them or have them adjusted for you. Unless you control the DNS server, you’ll have to contact
+somebody else—the DNS server administrator—to have this done. (Chapter 6, “DNS Server Configuration,”
+covers DNS server administration.)
+* Adjust /etc/hosts If your computer is part of a small local network, you can edit the /etc/hosts file. This file
+contains mappings of IP addresses to hostnames, typically for a small number of local computers. Note that
+editing this file adjusts name resolution for the computer that holds this file only. Thus, if you need to fix name
+resolution for a computer that’s unreachable by its correct name, you must adjust the /etc/hosts files on all the
+computers that should be able to reach the computer in question.
+* Change the Local Hostname You can change the computer’s local hostname, typically by editing the
+/etc/hostname or /etc/HOSTNAME file.
+</aside>
+
+
+
+## Utilidad dig (I)
+
+* Podemos analizar más en profundidad los problemas de resolución de nombres usando la utilidad [`dig`]('http://linux.die.net/man/1/dig')
+* Permite solicitar a DNS información sobre servidores o dominios
+
+```bash
+dig [@server] [-b address] [-c class] [-f filename] [-k filename] [-m] [-p port#] [-q name] [-t type] [-x addr] [-y [hmac:]name:key] [-4] [-6] [name] [type] [class] [queryopt...]
+
+dig [-h]
+dig [global-queryopt...] [query...]
+```
+
+<aside class="notes">
+* Deeper DNS issues can be investigated using the dig utility.
+* This utility queries DNS servers for information on individual hosts or entire domains.
+* In its most basic form, it can be used much like host.
+</aside>
+
+
+
+## dig (II)
+
+* Podemos consultar información sobre un dominio (por defecto registros de tipo A)
+
+```
+$ dig redhat.com
+
+; <<>> DiG 9.7.3-RedHat-9.7.3-2.el6 <<>> redhat.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 62863
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 4, ADDITIONAL: 3
+
+;; QUESTION SECTION:
+;redhat.com.                    IN      A
+
+;; ANSWER SECTION:
+redhat.com.             37      IN      A       209.132.183.81
+
+;; AUTHORITY SECTION:
+redhat.com.             73      IN      NS      ns4.redhat.com.
+redhat.com.             73      IN      NS      ns3.redhat.com.
+redhat.com.             73      IN      NS      ns2.redhat.com.
+redhat.com.             73      IN      NS      ns1.redhat.com.
+
+;; ADDITIONAL SECTION:
+ns1.redhat.com.         73      IN      A       209.132.186.218
+ns2.redhat.com.         73      IN      A       209.132.183.2
+ns3.redhat.com.         73      IN      A       209.132.176.100
+
+;; Query time: 13 msec
+;; SERVER: 209.144.50.138#53(209.144.50.138)
+;; WHEN: Thu Jan 12 10:09:49 2012
+;; MS
+```
+
+<aside class="notes">
+* The dig command output has the following sections:
+ * Header: This displays the dig command version number, the global options used by the dig command, and few additional header information.
+ * QUESTION SECTION: This displays the question it asked the DNS. i.e This is your input. Since we said ‘dig redhat.com’, and the default type dig command uses is A record, it indicates in this section that we asked for the A record of the redhat.com website
+ * ANSWER SECTION: This displays the answer it receives from the DNS. i.e This is your output. This displays the A record of redhat.com
+ * AUTHORITY SECTION: This displays the DNS name server that has the authority to respond to this query. Basically this displays available name servers of redhat.com
+ * ADDITIONAL SECTION: This displays the ip address of the name servers listed in the AUTHORITY SECTION.
+ * Stats section at the bottom displays few dig command statistics including how much time it took to execute this query
+</aside>
+
+
+
+## dig (III)
+
+* Consula información sobre un dominio a un DNS especíco
+
+```
+$ dig @10.20.102.7 redhat.com
+
+; <<>> DiG 9.7.3-RedHat-9.7.3-2.el6 <<>> redhat.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 62863
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 4, ADDITIONAL: 3
+
+;; QUESTION SECTION:
+;redhat.com.                    IN      A
+
+;; ANSWER SECTION:
+redhat.com.             37      IN      A       209.132.183.81
+
+;; AUTHORITY SECTION:
+redhat.com.             73      IN      NS      ns4.redhat.com.
+redhat.com.             73      IN      NS      ns3.redhat.com.
+redhat.com.             73      IN      NS      ns2.redhat.com.
+redhat.com.             73      IN      NS      ns1.redhat.com.
+
+;; ADDITIONAL SECTION:
+ns1.redhat.com.         73      IN      A       209.132.186.218
+ns2.redhat.com.         73      IN      A       209.132.183.2
+ns3.redhat.com.         73      IN      A       209.132.176.100
+
+;; Query time: 13 msec
+;; SERVER: 10.20.102.7#53(10.20.102.7)
+;; WHEN: Thu Jan 12 10:09:49 2012
+;; MS
+```
+
+
+
+## Soluciones
+
+* Si la información que nos da no es correcta comprobamos los valores contenidos en `/etc/hosts`
+```bash
+$ cat /etc/hosts
+127.0.0.1         localhost
+209.85.229.104    www.google.es
+255.255.255.0     www.paginabloqueada1.com    www.paginabloqueada2.com
+255.255.255.0     www.paginabloqueada3.com
+```
+* Si sigue sin funcionar comprobamos el fichero `/etc/resolv.conf`
+```bash
+domain example.com
+nameserver 192.168.1.2
+nameserver 10.9.16.30
+nameserver 10.9.16.25
+```
+
+<aside class="notes">
+* If your computer doesn’t seem to be resolving hostnames correctly, you can check the /etc/hosts file.
+* If this file contains entries it shouldn’t have, remove them; and if it lacks entries it should have, add them.
+* You can also check the /etc/resolv.conf file, this file should contain a domain line that specifies a default domain name and up to three nameserver lines that specify the IP addresses of DNS servers:
+domain example.com
+nameserver 192.168.1.2
+nameserver 10.9.16.30
+nameserver 10.9.16.25
+*  Verify that the DNS servers are working by querying each one directly with host or dig.
+* If one isn’t working, wait a while and try again, in case the problem is temporary.
+* If a DNS server doesn’t seem to respond at all for an extended period, perhaps its entry is in error.
+* Setting the domain correctly is important for resolving hostnames that lack the domain component.
+* You can search additional domains by adding a search line that lists additional domains, separated by spaces or tabs.
+</aside>
