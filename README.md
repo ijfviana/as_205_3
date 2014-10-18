@@ -1,7 +1,7 @@
 as_205_3
 ========
 
-Transparncias correspondientes al tema de Configuración de Red, Resolución de problemas de la asignatura Administración de Servidores impartida en el Grado de Ingeniería Informáctica de la Universidad de Huelva
+Transparencias correspondientes al tema de "Configuración de red, resolución de problemas" de la asignatura Administración de Servidores impartida en el Grado de Ingeniería Informática de la Universidad de Huelva
 
 
 Instalación
@@ -51,7 +51,7 @@ cd as_205_3
 bower install
 ```
 
-7. Ejecute la presentacion
+7. Ejecute la presentación
 
 ```
 grunt server

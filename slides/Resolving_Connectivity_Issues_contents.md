@@ -11,11 +11,11 @@
 ## Problemas de conectividad
 ### Problemas DHCP
 
-* ¿Pueden otros ordenadores hacer uso del Sevidor DCHP?
+* ¿Pueden otros ordenadores hacer uso del Servidor DCHP?
  * No, hay que revisar la configuración del servidor de DHCP
  * Sí, el servidor de DCHP es selectivo a la hora de dar direcciones IP
 * ¿Están en el mismo segmento de red que el servidor DHCP?
- * No, los router no suelen hacer forwarding de tráfico DHCP
+ * No, los router no suelen hacer forwarding de este tráfico
 * Prueba con distintos cliente DHCP
 * Comprueba los ficheros de log del cliente y servidor de DHCP
 

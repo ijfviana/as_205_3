@@ -13,7 +13,7 @@
 * Muchos problemas de red se deben a malas configuraciones del [firewall](http://es.wikipedia.org/wiki/Cortafuegos_%28inform%C3%A1tica%29)
 
 <a class="fancybox" href="img/firewall.png" data-fancybox-group="gallery" title="Firewall">
-	<img height="500px" src="img/firewall.png" alt="Firewall">
+	<img height="500px" src="img/firewall.redimensionado50.png" alt="Firewall">
 </a>
 
 <aside class="notes">
@@ -27,8 +27,8 @@
 * En Linux la configuración del firewall se gestiona usando [iptables](http://linux.die.net/man/8/iptables)
 * Permite gestionar las cadenas de reglas que se aplican al recibir tráfico entrante, saliente o de reenvio.
 
-<a class="fancybox" href="img/iptables.png" data-fancybox-group="gallery" title="Volumenes físicos">
-	<img height="350px" src="img/iptables.png" alt="Volumenes físicos">
+<a class="fancybox" href="img/iptables.png" data-fancybox-group="gallery" title="iptables">
+	<img height="350px" src="img/iptables.png" alt="iptables">
 </a>
 
 

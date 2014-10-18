@@ -45,7 +45,7 @@ vagalume.dti.uhu.es
 ijfviana-dev@vagalume-dev:~$ host vagalume.dti.uhu.es
 vagalume.dti.uhu.es has address 192.168.1.2
 ```
-* La dirección que devuelve debe conincidir con la obtenida mediante el comando [`ifconfig`](http://linux.die.net/man/8/ifconfig).
+* La dirección que devuelve debe coincidir con la obtenida mediante el comando [`ifconfig`](http://linux.die.net/man/8/ifconfig).
 * Excepciones:
  * Sistemas con múltiples interfaces
  * Sistemas que usen sistemas de balanceo
@@ -76,13 +76,13 @@ $ host nessus.example.com 10.20.102.7
 
 <div class="row">
   <div class="col-md-6">
-        <a class="fancybox" href="img/DNS_Tree.svg" data-fancybox-group="gallery" title="Volumenes físicos">
-      <img height="350px" src="img/DNS_Tree.svg" alt="Volumenes físicos">
+        <a class="fancybox" href="img/DNS_Tree.svg" data-fancybox-group="gallery" title="DNS Tree">
+      <img height="350px" src="img/DNS_Tree.svg" alt="DNS Tree">
       </a>
   </div>
   <div class="col-md-6">
-    <a class="fancybox" href="img/Root-current.svg" data-fancybox-group="gallery" title="Volumenes físicos">
-    <img height="350px" src="img/Root-current.svg" alt="Volumenes físicos">
+    <a class="fancybox" href="img/Root-current.svg" data-fancybox-group="gallery" title="DNS raices">
+    <img height="350px" src="img/Root-current.svg" alt="DNS raices">
   </a>
   </div>
 </div>
@@ -191,7 +191,7 @@ ns3.redhat.com.         73      IN      A       209.132.176.100
 
 ## dig (III)
 
-* Consula información sobre un dominio a un DNS especíco
+* Consulta información sobre un dominio a un DNS específico
 
 ```
 $ dig @10.20.102.7 redhat.com

@@ -17,8 +17,8 @@
 
 ## Localización del nivel (I)
 
-<a class="fancybox" href="img/layers.png" data-fancybox-group="gallery" title="Volumenes físicos">
-<img height="550px" src="img/layers.png" alt="Volumenes físicos">
+<a class="fancybox" href="img/layers.png" data-fancybox-group="gallery" title="Capas">
+<img height="550px" src="img/layers.png" alt="Capas">
 </a>
 
 <aside class="notes">
@@ -34,8 +34,8 @@
 
 ## Localización del nivel (II)
 
-<a class="fancybox" href="img/wires.png" data-fancybox-group="gallery" title="Volumenes físicos">
-<img height="550px" src="img/wires.png" alt="Volumenes físicos">
+<a class="fancybox" href="img/wires.png" data-fancybox-group="gallery" title="Cableado estructurado">
+<img height="550px" src="img/wires.redimensionado50.png" alt="Cableado estructurado">
 </a>
 
 <aside class="notes">
@@ -82,7 +82,7 @@
 ## Localización del nivel (VII)
 
 * Mediante utilidades como wireshark comprobamos que el servidor responde a todas la peticiones
- * <span class="fragment fade-in"> ***Los problemas se deben a una mala interacción ¿las claves son correctas?*** </span>
+ * <span class="fragment fade-in"> ***Los problemas se deben a una mala interacción ¿Las claves son correctas?*** </span>
 
 
 
